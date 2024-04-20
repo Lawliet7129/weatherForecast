@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Weather Forecast Application</title>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+   <style>
+       body {
+           font-family: 'Poppins', sans-serif;
+           background-color: #FADCD9; /* Soft Baby Pink Background */
+           color: #5C415D; /* Darker text for readability */
+           text-align: center;
+           margin: 0;
+           padding: 0;
+       }
+       .container {
+           width: 100%;
+           max-width: 400px;
+           margin: 100px auto;
+           padding: 20px;
+           background: #FFF0F3; /* Lighter Pink Background for the container */
+           border-radius: 8px;
+           box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+       }
+       input, select, button {
+           width: calc(100% - 20px);
+           padding: 12px;
+           margin-top: 15px;
+           border: 2px solid #F7B2C8; /* Pink border */
+           border-radius: 8px;
+           box-sizing: border-box;
+           background: #FFF; /* White background */
+           color: #5C415D; /* Darker text for readability */
+           font-size: 16px;
+           transition: border-color 0.3s;
+       }
+       input:focus, select:focus {
+           border-color: #FF69B4; /* Hot pink border on focus */
+           outline: none;
+       }
+       select {
+           appearance: none; /* Remove default select styling */
+           background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%235C415D'%3E%3Cpath d='M10 12l-5-5H3l7 7 7-7h-2l-5 5z'/%3E%3C/svg%3E");
+           background-repeat: no-repeat;
+           background-position: right 10px center;
+       }
+       button {
+           background-color: #FF69B4; /* Hot pink button */
+           color: #FFF; /* White text */
+           border: none;
+           cursor: pointer;
+           transition: background-color 0.3s, transform 0.3s;
+       }
+       button:hover {
+           background-color: #FF1493; /* Lighter shade of pink on hover */
+           transform: translateY(-2px);
+       }
+       .error {
+           color: #D66A6A; /* Soft Red for errors */
+           margin-top: 20px;
+       }
+       .logo {
+           width: 100px;
+           margin-bottom: 20px;
+       }
+       .weather-info {
+           margin-top: 20px;
+           text-align: left;
+       }
+       .forecast-item {
+           margin-top: 20px;
+           text-align: left;
+           border-top: 2px solid #FF69B4; /* Hot pink border between forecast items */
+           padding-top: 10px;
+       }
+   </style>
+</head>
+<body>
+   <!-- Placeholder for the weather-themed logo -->
+   <div class="container">
+       <img src="/path/to/weather-logo.png" alt="weather-logo.png" class="logo">
+       <h1>Weather Forecast</h1>
+       <form action="/weather" method="post">
+           <input type="text" name="city" placeholder="Enter city name" required>
+           <select name="units">
+               <option value="metric">Metric (°C, m/s)</option>
+               <option value="imperial">Imperial (°F, mph)</option>
+           </select>
+           <select name="lang">
+               <option value="en">English</option>
+               <option value="es">Spanish</option>
+           </select>
+           <button type="submit">Get Forecast</button>
+       </form>
+       {% if error %}
+       <p class="error">Error: {{ error }}</p>
+       {% endif %}
+       <div class="weather-info">
+           <h2>Weather Forecast</h2>
+           <p><strong>City:</strong> {{ weather.timezone }}</p>
+           <p><strong>Current Temperature:</strong> {{ weather.current.temp }} °C</p>
+           <p><strong>Weather Description:</strong> {{ weather.current.weather[0].description }}</p>
+           <p><strong>Humidity:</strong> {{ weather.current.humidity }}%</p>
+           <p><strong>Wind Speed:</strong> {{ weather.current.wind_speed }} m/s</p>
+           <p><strong>UV Index:</strong> {{ weather.current.uvi }}</p>
+       </div>
+       <div class="forecast">
+           <h3>7-Day Forecast</h3>
+           <table>
+               <thead>
+                   <tr>
+                       <th>Date</th>
+                       <th>Temperature (°C)</th>
+                       <th>Weather Description</th>
+                       <th>Humidity (%)</th>
+                       <th>Wind Speed (m/s)</th>
+                   </tr>
+               </thead>
+               <tbody>
+                   {% for day in weather.daily %}
+                   <tr>
+                       <td>{{ day.dt }}</td>
+                       <td>{{ day.temp.day }}</td>
+                       <td>{{ day.weather[0].description }}</td>
+                       <td>{{ day.humidity }}</td>
+                       <td>{{ day.wind_speed }}</td>
+                   </tr>
+                   {% endfor %}
+               </tbody>
+           </table>
+       </div>

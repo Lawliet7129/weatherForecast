@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast Application</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FADCD9; /* Soft Baby Pink Background */
+            color: #5C415D; /* Darker text for readability */
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            background: #FFF0F3; /* Lighter Pink Background for the container */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        input, select, button {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 15px;
+            border: 2px solid #FFFFFF; /* White Border */
+            border-radius: 4px;
+            box-sizing: border-box;
+            background: transparent;
+            color: #5C415D; /* Darker text for readability */
+        }
+        button {
+            background-color: #F9C6D9; /* Matching Pink Button */
+            color: #5C415D;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+        button:hover {
+            background-color: #F7B2C8; /* Lighter shade for hover */
+            transform: translateY(-2px);
+        }
+        .error {
+            color: #D66A6A; /* Soft Red for errors */
+            margin-top: 20px;
+        }
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Placeholder for the weather-themed logo -->
+    <div class="container">
+        <img src="/path/to/weather-logo.png" alt="Weather Logo" class="logo">
+        <h1>Weather Forecast</h1>
+        <form action="/weather" method="post">
+            <input type="text" name="city" placeholder="Enter city name" required>
+            <select name="units">
+                <option value="metric">Metric (°C, m/s)</option>
+                <option value="imperial">Imperial (°F, mph)</option>
+            </select>
+            <select name="lang">
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+            </select>
+            <button type="submit">Get Forecast</button>
+        </form>
+        {% if error %}
+        <p class="error">Error: {{ error }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
