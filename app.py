@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 
 app = Flask(__name__)
 
-API_KEY = 'fb57c4d46381ba37654266e45ddd6c10'
+API_KEY = 'Enter API_KEY'
 BASE_URL = 'https://api.openweathermap.org/data/3.0/onecall'
 
 @app.route('/', methods=['GET'])
