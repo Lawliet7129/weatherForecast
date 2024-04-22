@@ -1,14 +1,53 @@
 ## Code Structure and Architecture
 
-The `WeatherForecast` application utilizes the Flask framework to provide weather forecasts for cities using the OpenWeatherMap API. Designed for simplicity and efficiency, the application is structured to facilitate easy maintenance and scalability.
+The `WeatherForecast` application utilizes the Flask framework to provide weather forecasts for cities using the OpenWeatherMap API. 
+
+### Prerequisites
+
+- Python 3.6 or higher
+- Flask
+- Requests library
+
+### Setting Up
+
+1. **Clone the Repository:**
+   Clone the source code from your repository or download the zip file and extract it into your local machine.
+
+   ```bash
+   git clone <repository-url>
+   cd WeatherForecast
+   
+2. **Install Dependencies**
+Install the necessary Python dependencies using pip. It's recommended to use a virtual environment to avoid conflicts with other packages.
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   pip install flask requests
+
+4. **API Key Configuration**
+You need an API key from OpenWeatherMap to fetch weather data: Sign up or log in at [OpenWeatherMap.](https://openweathermap.org/).
+Replace 'Enter_API_KEY' in app.py with your actual API key.
+
+Once the setup is complete, you can run the application locally:
+
+   ```bash
+   python app.py
+   ```
+
+This command starts the Flask server on localhost on port 5000. You can access the application by navigating to http://localhost:5000 in your web browser.
+
+**Usage**
+- Home Page: The home page allows you to enter a city name and select units (Metric or Imperial) and language for the weather report.
+- Submit: After entering the city name and preferences, click the 'Get Forecast' button to view the weather forecast.
 
 ### Key Components
 
 - **app.py**: The core script of the application. It sets up the Flask application, defines routes, and includes all the main functional operations for handling API interactions.
 
-### Detailed Breakdown of Functions and Routes
+### Functions and Routes
 
-The application is architecturally designed around Flask routes and specific helper functions, detailed as follows:
+The application is designed around Flask routes and specific helper functions, detailed as follows:
 
 1. **`home()` Function**:
    - **Functionality**: Serves the homepage using the `index.html` template, allowing users to input the city name for which they seek weather data.
@@ -26,12 +65,4 @@ The application is architecturally designed around Flask routes and specific hel
    - **Functionality**: Requests detailed weather information based on latitude and longitude from OpenWeatherMap and formats this data for the frontend.
    - **Rationale**: Centralizing API interactions within this function simplifies the application's error handling and data formatting, leading to more maintainable and robust code.
 
-### Architectural Strategy
 
-The application adopts an MVC (Model-View-Controller) pattern typical in web applications, structured as follows:
-
-- **Model**: Data interaction and API communication are managed through helper functions, which abstract the application's data logic.
-- **View**: The `templates` directory contains `index.html` and `forecast.html`, which render the user interface.
-- **Controller**: Flask routes act as controllers, mediating between user inputs and backend data processing.
-
-This division ensures a clean separation of concerns, facilitating easier debugging, development, and potential future expansions.
