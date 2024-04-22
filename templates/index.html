@@ -57,7 +57,7 @@
 <body>
     <!-- Placeholder for the weather-themed logo -->
     <div class="container">
-        <img src="/path/to/weather-logo.png" alt="Weather Logo" class="logo">
+        <img src="{{ url_for('static', filename='weather-logo.png') }}" alt="Weather Logo" class="logo">
         <h1>Weather Forecast</h1>
         <form action="/weather" method="post">
             <input type="text" name="city" placeholder="Enter city name" required>
