@@ -1,131 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Weather Forecast Application</title>
-   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-   <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast Application</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css">
+    <style>
        body {
            font-family: 'Poppins', sans-serif;
-           background-color: #FADCD9; /* Soft Baby Pink Background */
-           color: #5C415D; /* Darker text for readability */
+           background-color: #FADCD9;
+           color: #5C415D;
            text-align: center;
            margin: 0;
            padding: 0;
        }
        .container {
            width: 100%;
-           max-width: 400px;
-           margin: 100px auto;
+           max-width: 600px;
+           margin: 50px auto;
            padding: 20px;
-           background: #FFF0F3; /* Lighter Pink Background for the container */
+           background: #FFF0F3;
            border-radius: 8px;
            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
        }
        input, select, button {
-           width: calc(100% - 20px);
+           width: 100%;
            padding: 12px;
            margin-top: 15px;
-           border: 2px solid #F7B2C8; /* Pink border */
+           border: 2px solid #F7B2C8;
            border-radius: 8px;
-           box-sizing: border-box;
-           background: #FFF; /* White background */
-           color: #5C415D; /* Darker text for readability */
+           background: #FFF;
+           color: #5C415D;
            font-size: 16px;
-           transition: border-color 0.3s;
+           transition: border-color 0.3s, transform 0.3s;
        }
        input:focus, select:focus {
-           border-color: #FF69B4; /* Hot pink border on focus */
-           outline: none;
-       }
-       select {
-           appearance: none; /* Remove default select styling */
-           background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%235C415D'%3E%3Cpath d='M10 12l-5-5H3l7 7 7-7h-2l-5 5z'/%3E%3C/svg%3E");
-           background-repeat: no-repeat;
-           background-position: right 10px center;
-       }
-       button {
-           background-color: #FF69B4; /* Hot pink button */
-           color: #FFF; /* White text */
-           border: none;
-           cursor: pointer;
-           transition: background-color 0.3s, transform 0.3s;
-       }
-       button:hover {
-           background-color: #FF1493; /* Lighter shade of pink on hover */
-           transform: translateY(-2px);
-       }
+         border-color: #FF69B4;
+         outline: none;
+     }
+     select {
+         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%235C415D'%3E%3Cpath d='M10 12l-5-5H3l7 7 7-7h-2l-5 5z'/%3E%3C/svg%3E");
+         background-repeat: no-repeat;
+         background-position: right 10px center;
+     }
+     button {
+         background-color: #FF69B4;
+         color: #FFF;
+         border: none;
+         cursor: pointer;
+         transition: background-color 0.3s, transform 0.3s;
+     }
+     button:hover {
+         background-color: #FF1493;
+         transform: translateY(-2px);
+     }
        .error {
-           color: #D66A6A; /* Soft Red for errors */
+           color: #D66A6A;
            margin-top: 20px;
        }
        .logo {
-           width: 100px;
-           margin-bottom: 20px;
+           width: 200px;
+           margin-bottom: 10px;
        }
-       .weather-info {
-           margin-top: 20px;
+       .weather-info, .forecast {
            text-align: left;
-       }
-       .forecast-item {
            margin-top: 20px;
-           text-align: left;
-           border-top: 2px solid #FF69B4; /* Hot pink border between forecast items */
-           padding-top: 10px;
        }
-   </style>
+       table {
+         width: 100%;
+         margin-top: 10px;
+         border-collapse: collapse;
+     }
+     th, td {
+         text-align: left;
+         padding: 8px;
+         border-bottom: 1px solid #FF69B4;
+     }
+       canvas {
+           padding: 0;
+           margin: auto;
+           display: block;
+           width: 100%;
+           height: auto;
+       }
+       .weather-icon {
+         width: 32px;
+         height: 32px;
+         vertical-align: middle;
+     }
+
+
+       @media (max-width: 768px) {
+           .container {
+               padding: 10px;
+               margin: 10px;
+           }
+           button {
+               font-size: 14px;
+           }
+       }
+    </style>
 </head>
 <body>
-   <div class="container">
-       <img src="/path/to/weather-logo.png" alt="weather-logo.png" class="logo">
-       <h1>Weather Forecast</h1>
-       <form action="/weather" method="post">
-           <input type="text" name="city" placeholder="Enter city name" required>
-           <select name="units">
-               <option value="metric">Metric (°C, m/s)</option>
-               <option value="imperial">Imperial (°F, mph)</option>
-           </select>
-           <select name="lang">
-               <option value="en">English</option>
-               <option value="es">Spanish</option>
-           </select>
-           <button type="submit">Get Forecast</button>
-       </form>
-       {% if error %}
-       <p class="error">Error: {{ error }}</p>
-       {% endif %}
-       <div class="weather-info">
-           <h2>Weather Forecast</h2>
-           <p><strong>City:</strong> {{ weather.timezone }}</p>
-           <p><strong>Current Temperature:</strong> {{ weather.current.temp }} °C</p>
-           <p><strong>Weather Description:</strong> {{ weather.current.weather[0].description }}</p>
-           <p><strong>Humidity:</strong> {{ weather.current.humidity }}%</p>
-           <p><strong>Wind Speed:</strong> {{ weather.current.wind_speed }} m/s</p>
-           <p><strong>UV Index:</strong> {{ weather.current.uvi }}</p>
-       </div>
-       <div class="forecast">
-           <h3>7-Day Forecast</h3>
-           <table>
-               <thead>
-                   <tr>
-                       <th>Date</th>
-                       <th>Temperature (°C)</th>
-                       <th>Weather Description</th>
-                       <th>Humidity (%)</th>
-                       <th>Wind Speed (m/s)</th>
-                   </tr>
-               </thead>
-               <tbody>
-                   {% for day in weather.daily %}
-                   <tr>
-                       <td>{{ day.dt }}</td>
-                       <td>{{ day.temp.day }}</td>
-                       <td>{{ day.weather[0].description }}</td>
-                       <td>{{ day.humidity }}</td>
-                       <td>{{ day.wind_speed }}</td>
-                   </tr>
-                   {% endfor %}
-               </tbody>
-           </table>
-       </div>
+    <div class="container">
+        <img src="{{ url_for('static', filename='weather-logo.png') }}" alt="Weather Logo" class="logo">
+        <h1>Weather Forecast</h1>
+        <form action="/weather" method="post">
+            <input type="text" name="city" placeholder="Enter city name" required>
+            <select name="units">
+                <option value="metric">Metric (°C, m/s)</option>
+                <option value="imperial">Imperial (°F, mph)</option>
+            </select>
+            <select name="lang">
+                <option value="en">English</option>
+            </select>
+            <button type="submit">Get Forecast</button>
+        </form>
+        {% if error %}
+        <p class="error">Error: {{ error }}</p>
+        {% endif %}
+        <div class="weather-info">
+            <h2>Weather Forecast</h2>
+            <p><strong>City:</strong> {{ weather.timezone }}</p>
+            <p><strong>Current Temperature:</strong> {{ weather.current.temp }} °C
+                <i id="current-icon" class="wi" data-description="{{ weather.current.weather[0].description }}"></i></p>
+            <p><strong>Weather Description:</strong> {{ weather.current.weather[0].description }}</p>
+            <p><strong>Humidity:</strong> {{ weather.current.humidity }}%</p>
+            <p><strong>Wind Speed:</strong> {{ weather.current.wind_speed }} m/s</p>
+            <p><strong>UV Index:</strong> {{ weather.current.uvi }}</p>
+        </div>
+        <div class="forecast">
+            <h3>7-Day Forecast</h3>
+            <canvas id="forecastChart"></canvas>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Temperature (°C)</th>
+                    <th>Weather Description</th>
+                    <th>Humidity (%)</th>
+                    <th>Wind Speed (m/s)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for day in weather.daily %}
+                <tr>
+                    <td>{{ day.dt }}</td>
+                    <td>{{ day.temp.day }} °C</td>
+                    <td>{{ day.weather[0].description }}
+                        <i class="wi forecast-icon" data-description="{{ day.weather[0].description }}"></i></td>
+                    <td>{{ day.humidity }}</td>
+                    <td>{{ day.wind_speed }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+         document.addEventListener("DOMContentLoaded", function() {
+           const ctx = document.getElementById('forecastChart').getContext('2d');
+           const tempLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+           const tempData = [];
+   const humidityData = [];
+   const tableRows = document.querySelectorAll('tbody tr');
+   tableRows.forEach(row => {
+       const tempCellValue = row.querySelector('td:nth-child(2)').innerText;
+       const humidityCellValue = row.querySelector('td:nth-child(4)').innerText;
+       tempData.push(parseFloat(tempCellValue));
+       humidityData.push(parseFloat(humidityCellValue));
+	updateWeatherIcons();
+   });
+   const forecastChart = new Chart(ctx, {
+               type: 'line',
+               data: {
+                   labels: tempLabels,
+                   datasets: [{
+               label: 'Temperature (°C)',
+               data: tempData,
+               backgroundColor: 'rgba(255, 105, 180, 0.2)',
+               borderColor: '#FF69B4',
+               borderWidth: 1
+           },
+           {
+               label: 'Humidity (%)',
+               data: humidityData,
+               backgroundColor: 'rgba(105, 105, 255, 0.2)',
+               borderColor: '#6A5ACD',
+               borderWidth: 1
+           }]
+               },
+               options: {
+                   scales: {
+                       y: {
+                           beginAtZero: false
+                       }
+                   }
+               }
+           });
+       });
+        function updateWeatherIcons() {
+            const currentIconElement = document.getElementById('current-icon');
+            const currentDescription = currentIconElement.getAttribute('data-description').toLowerCase();
+            currentIconElement.className = 'wi ' + iconMapping(currentDescription);
+
+            const forecastIcons = document.querySelectorAll('.forecast-icon');
+            forecastIcons.forEach(icon => {
+                const description = icon.getAttribute('data-description').toLowerCase();
+                icon.className = 'wi ' + iconMapping(description);
+            });
+        }
+
+        function iconMapping(description) {
+            if (description.includes('clear sky')) return 'wi-day-sunny';
+            if (description.includes('few clouds')) return 'wi-day-cloudy';
+            if (description.includes('scattered clouds')) return 'wi-cloud';
+            if (description.includes('broken clouds')) return 'wi-cloudy';
+            if (description.includes('shower rain')) return 'wi-showers';
+            if (description.includes('rain')) return 'wi-rain';
+            if (description.includes('thunderstorm')) return 'wi-thunderstorm';
+            if (description.includes('snow')) return 'wi-snow';
+            if (description.includes('mist')) return 'wi-fog';
+            return 'wi-day-sunny'; // Default icon if no match is found
+        }
+    </script>
+</body>
+</html>
